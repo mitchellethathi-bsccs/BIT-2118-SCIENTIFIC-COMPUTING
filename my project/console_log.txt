@@ -1,0 +1,592 @@
+======================================================================
+### Task_02_numpy_arrays.py
+======================================================================
+============================================================
+ORIGINAL CASE: Weather-station temperatures (Task 02)
+============================================================
+Daily mean temperature: 23.12 C
+Minimum temperature:    17.50 C
+Maximum temperature:    29.40 C
+First six Fahrenheit readings: [65.3  64.4  64.04 63.5  64.22 66.2 ]
+
+------------------------------------------------------------
+C) PARAMETER CHANGE: add a heat-wave day (all readings +4 C)
+------------------------------------------------------------
+New mean: 27.12 C (was 23.12 C, shift = +4.00 as expected)
+New min:  21.50 C, New max: 33.40 C
+First six Kelvin readings:   [291.65 291.15 290.95 290.65 291.05 292.15]
+
+============================================================
+E) MODIFIED CASE: IoT soil-moisture sensor array
+============================================================
+Mean moisture:  27.63 %
+Min / Max:      24.00 % / 31.20 %
+Hours below 25% (irrigation needed): 2 -> time stamps: [10, 11]
+Interpretation: the field dries steadily; irrigation should start
+around reading index 7 (hour 7) before moisture drops below 25%.
+
+======================================================================
+### Task_03_vectorization.py
+======================================================================
+============================================================
+ORIGINAL CASE: Network-latency conversion (Task 03)
+============================================================
+First five squared latency values: [0.03787665 0.01266192 0.04637842 0.03092504 0.00078812]
+Loop time:       0.2404 s
+Vectorized time: 0.0032 s
+Approximate speed-up: 74.3x
+
+------------------------------------------------------------
+C) PARAMETER CHANGE: different array sizes
+------------------------------------------------------------
+n =    10,000: loop 0.0024s vs vectorized 0.000086s (speed-up 28x)
+n =   100,000: loop 0.0228s vs vectorized 0.001335s (speed-up 17x)
+n = 1,000,000: loop 0.2296s vs vectorized 0.002101s (speed-up 109x)
+
+============================================================
+E) MODIFIED CASE: Image-pixel normalization (0-255 -> 0-1)
+============================================================
+Image shape: (512, 512), pixels: 262,144
+Raw range: 0-255; normalized range: 0.000-1.000
+Interpretation: the full image is normalized in one NumPy expression
+instead of 262,144 loop iterations - exactly what image processing needs.
+
+======================================================================
+### Task_04_floating_point.py
+======================================================================
+============================================================
+ORIGINAL CASE: Floating-point comparison and error (Task 04)
+============================================================
+0.1 + 0.2 = 0.30000000000000004
+Exact comparison: False
+Tolerance-based comparison: True
+Absolute error: 0.00021356
+Relative error: 0.00015101
+
+------------------------------------------------------------
+C) PARAMETER CHANGE: x -> 1e-4, 1e-8, 1e-12 (unstable vs stable)
+------------------------------------------------------------
+  x         unstable (sqrt(1+x)-1)/x   stable 1/(sqrt(1+x)+1)
+    1e-04   0.4999875006239662      0.4999875006249609
+    1e-08   0.4999999969612645      0.4999999987500000
+    1e-12   0.5000444502911705      0.4999999999998750
+As x shrinks, the unstable form loses accuracy to cancellation,
+while the stable form stays correct (true value -> 0.5).
+
+============================================================
+E) MODIFIED CASE: Bank interest accumulation
+============================================================
+Balance after 3 deposits: 0.30000000000000004
+Exact == 0.3 ? False
+np.isclose ?  True
+Accumulated absolute error: 5.55e-17
+Interpretation: in banking software, never compare money with ==;
+always compare with a tolerance (or use integer cents/Decimal).
+
+======================================================================
+### Task_05_matrix_algebra.py
+======================================================================
+============================================================
+ORIGINAL CASE: Graphics rotation + scaling (Task 05)
+============================================================
+Original points:
+ [[0. 0.]
+ [1. 0.]
+ [1. 1.]
+ [0. 1.]]
+Transformation matrix:
+ [[ 1.41421356 -1.06066017]
+ [ 1.41421356  1.06066017]]
+Transformed points:
+ [[ 0.          0.        ]
+ [ 1.41421356  1.41421356]
+ [ 0.35355339  2.47487373]
+ [-1.06066017  1.06066017]]
+Determinant: 2.9999999999999996
+
+------------------------------------------------------------
+C) PARAMETER CHANGE: angle = 90 deg, scale = (3, 1)
+------------------------------------------------------------
+New transformation:
+ [[ 1.8369702e-16 -1.0000000e+00]
+ [ 3.0000000e+00  6.1232340e-17]]
+Transformed points:
+ [[ 0.0000000e+00  0.0000000e+00]
+ [ 1.8369702e-16  3.0000000e+00]
+ [-1.0000000e+00  3.0000000e+00]
+ [-1.0000000e+00  6.1232340e-17]]
+New determinant: 3.0000000000000004 (area scale = 3.0; a 90-degree turn maps (1,0)->(0,3))
+
+============================================================
+E) MODIFIED CASE: Robot-arm joint rotation (robotics)
+============================================================
+Arm before rotation:
+ [[0.  0. ]
+ [2.  0. ]
+ [3.5 0. ]]
+Arm after 30-degree rotation:
+ [[0.         0.        ]
+ [1.73205081 1.        ]
+ [3.03108891 1.75      ]]
+Tool-tip distance from base after rotation: 3.5000 m (unchanged, as expected)
+Interpretation: rotation preserves distances - the arm's reach is
+constant while its orientation changes to reach the target.
+
+======================================================================
+### Task_06_linear_systems.py
+======================================================================
+============================================================
+ORIGINAL CASE: Server resource allocation (Task 06)
+============================================================
+Type A servers: 3
+Type B servers: 4
+Verification A @ solution: [20. 72.]
+Residual: [0. 0.]
+Residual norm: 0.0
+
+------------------------------------------------------------
+C) PARAMETER CHANGE: total memory rises 72 GB -> 96 GB
+------------------------------------------------------------
+New solution: A = 1.50, B = 7.00
+Interpretation: with the same 20 CPUs but 96 GB of memory, the
+datacentre needs fewer memory-hungry Type-A servers and more Type-B.
+
+============================================================
+E) MODIFIED CASE: Electrical-circuit analysis (Kirchhoff's laws)
+============================================================
+Loop current I1 = 2.091 A, I2 = 1.273 A
+Verification A @ I: [10.  6.]  residual norm: 1.9860273225978185e-15
+Current through shared 2-ohm branch: 0.818 A
+Interpretation: Kirchhoff's voltage laws give a 2x2 linear system;
+solving it yields every loop current, hence every branch current.
+
+======================================================================
+### Task_07_gaussian_lu.py
+======================================================================
+============================================================
+ORIGINAL CASE: Repeated measurements, factor once (Task 07)
+============================================================
+Measurement set 1
+  Solution: [5. 5. 5.]
+  Residual norm: 0.0
+Measurement set 2
+  Solution: [5.31707317 5.26829268 4.75609756]
+  Residual norm: 1.7763568394002505e-15
+Measurement set 3
+  Solution: [4.90243902 5.6097561  5.53658537]
+  Residual norm: 0.0
+Direct solution for first set: [5. 5. 5.]
+
+------------------------------------------------------------
+C) PARAMETER CHANGE: 8x8 dense matrix, 50 right-hand sides
+------------------------------------------------------------
+LU once + 50 solves: 0.00058 s/run
+50 direct solves:    0.00049 s/run
+With many b vectors, reusing the LU factors is much cheaper.
+
+============================================================
+E) MODIFIED CASE: Leontief economic input-output model
+============================================================
+Industry output levels x = (I-A)^-1 d per quarter:
+  Q1: [208.86 165.97 172.96]  (residual 2.1e-14)
+  Q2: [238.34 171.1  193.47]  (residual 3.3e-14)
+  Q3: [198.48 174.24 165.15]  (residual 2.0e-14)
+Interpretation: production must cover both inter-industry demand (Ax)
+and consumer demand (d); LU reuse makes quarterly forecasting instant.
+
+======================================================================
+### Task_08_iterative_linear.py
+======================================================================
+============================================================
+ORIGINAL CASE: 5-point steady-state temperature grid (Task 08)
+============================================================
+Jacobi temperatures:       [86.6667 73.3333 60.     46.6667 33.3333]
+Gauss-Seidel temperatures: [86.6667 73.3333 60.     46.6667 33.3333]
+Direct solution:           [86.6667 73.3333 60.     46.6667 33.3333]
+Iterations: Jacobi 150, Gauss-Seidel 75
+
+------------------------------------------------------------
+C) PARAMETER CHANGE: tolerance 1e-4 vs 1e-12
+------------------------------------------------------------
+tol = 1e-04: Jacobi  86 iterations, Gauss-Seidel  43 iterations
+tol = 1e-08: Jacobi 150 iterations, Gauss-Seidel  75 iterations
+tol = 1e-12: Jacobi 214 iterations, Gauss-Seidel 107 iterations
+A tighter tolerance needs more iterations but gives a more accurate answer.
+Saved figure outputs/figs/task08_convergence.png
+
+============================================================
+E) MODIFIED CASE: 20-point heat-transfer grid
+============================================================
+20-point grid: Jacobi converged in 500 iterations
+Max deviation from direct solve: 2.78e-01
+Temperature at grid point 10: 61.629 C
+Interpretation: the linear temperature drop between the two
+boundaries is recovered; iterative methods scale to huge sparse
+grids where direct factorization would be too expensive.
+
+======================================================================
+### Task_09_eigenvalues.py
+======================================================================
+============================================================
+ORIGINAL CASE: Network node importance (Task 09)
+============================================================
+Dominant eigenvalue: 2.5615528128088285
+Eigenvector-based importance:
+  A: 0.2192
+  B: 0.2808
+  C: 0.2808
+  D: 0.2192
+Verification error ||Av - lambda v||: 1.9357399876532506e-15
+
+------------------------------------------------------------
+C) PARAMETER CHANGE: remove edge C-D
+------------------------------------------------------------
+Dominant eigenvalue: 2.1701
+  A: 0.2192 -> 0.2696
+  B: 0.2808 -> 0.3154
+  C: 0.2808 -> 0.2696
+  D: 0.2192 -> 0.1454
+Removing C-D lowers C's and D's importance; B stays most central.
+
+============================================================
+E) MODIFIED CASE: PageRank-style directed web graph
+============================================================
+PageRank scores:
+  P1: 0.1723
+  P2: 0.1723
+  P3: 0.2437
+  P4: 0.2437
+  P5: 0.1681
+Damping eigenvalue check: 1.0 (should be ~1)
+Interpretation: P3 and P4 score highest because several pages link
+to them - the same eigenvector idea that powered Google PageRank.
+
+======================================================================
+### Task_10_root_finding.py
+======================================================================
+============================================================
+ORIGINAL CASE: Heat-balance equilibrium temperature (Task 10)
+============================================================
+Bisection equilibrium temperature:  27.525211 C
+Fixed-point equilibrium temperature: 27.525211 C
+Fixed-point iterations: 13
+
+------------------------------------------------------------
+C) PARAMETER CHANGE: different brackets / starting guesses
+------------------------------------------------------------
+  bracket [20, 40]: root = 27.525211 C after 38 bisections
+  bracket [25, 35]: root = 27.525211 C after 37 bisections
+  bracket [26, 30]: root = 27.525211 C after 36 bisections
+  fixed-point T0 = 20.0: converged to 27.525211 in 14 iterations
+  fixed-point T0 = 30.0: converged to 27.525211 in 13 iterations
+  fixed-point T0 = 38.0: converged to 27.525211 in 14 iterations
+Bisection always converges given a sign change; the fixed-point
+speed depends on |g'(x)| < 1 near the root.
+Saved figure outputs/figs/task10_equilibrium.png
+
+============================================================
+E) MODIFIED CASE: Business break-even point
+============================================================
+Break-even volume: 625.0 cakes (profit per cake = 12 - 4 = 8 KES)
+Check: profit at break-even = 0.00 KES
+Interpretation: any sales above ~625 cakes make a profit; below that,
+the bakery loses money. Root finding turns a break-even question
+into solving f(x) = 0.
+
+======================================================================
+### Task_11_newton_secant.py
+======================================================================
+============================================================
+ORIGINAL CASE: IRR of a project (Task 11)
+============================================================
+IRR using Newton-Raphson: 11.542461% after 4 iterations
+IRR using Secant method:  11.542461% after 7 iterations
+NPV at Newton solution: 0.000000
+
+------------------------------------------------------------
+C) PARAMETER CHANGE: add a 6th-year cash inflow of 2000
+------------------------------------------------------------
+New IRR with extra 2000 inflow: 16.375658%
+Interpretation: an extra positive cash flow raises the project's IRR,
+so the investment looks more attractive.
+
+============================================================
+E) MODIFIED CASE: Monthly interest rate on a loan (secant method)
+============================================================
+Monthly interest rate: 1.497666%
+Annual equivalent rate: 19.5288%
+Check (loan equation residual): -2.73e-11
+Interpretation: the lender's implied monthly rate is about 1.50%; the secant method found it using only function values,
+which is handy when no derivative of the loan equation is available.
+
+======================================================================
+### Task_12_nonlinear_equations.py
+======================================================================
+============================================================
+ORIGINAL CASE: Circle-parabola intersections (Task 12)
+============================================================
+Initial guess: [1.0, 1.0]
+Intersection: [1.51748991 1.30277564]
+Residuals: [np.float64(-2.4780177909633494e-13), np.float64(-2.4158453015843406e-13)]
+Converged: True
+
+Initial guess: [-1.0, 1.0]
+Intersection: [-1.51748991  1.30277564]
+Residuals: [np.float64(-2.4780177909633494e-13), np.float64(-2.4158453015843406e-13)]
+Converged: True
+
+------------------------------------------------------------
+C) PARAMETER CHANGE: circle radius 2 -> 3
+------------------------------------------------------------
+  guess [2.0, 2.0] -> intersection [1.836377 2.372281], residuals [-0.  0.]
+  guess [-2.0, 2.0] -> intersection [-1.836377  2.372281], residuals [-0.  0.]
+A bigger circle produces up to 4 intersections; the solver needs
+several starting guesses to find them all.
+
+============================================================
+E) MODIFIED CASE: Chemical-equilibrium composition
+============================================================
+Equilibrium extent of dissociation: x = 0.3904
+Mol A2 = 0.6096, mol A = 0.7808
+Check K = 4x^2/(1-x) = 1.0000 (target 1.0)
+Interpretation: about 39% of A2 dissociates; solving the
+nonlinear equilibrium polynomial gives the exact composition.
+
+======================================================================
+### Task_13_interpolation.py
+======================================================================
+============================================================
+ORIGINAL CASE: Hourly temperature resampling (Task 13)
+============================================================
+Linear estimate at 10:30: 22.25 C
+Cubic estimate at 10:30:  22.21 C
+
+------------------------------------------------------------
+C) PARAMETER CHANGE: fewer samples (8, 10, 12, 14 only)
+------------------------------------------------------------
+At 11:00  linear: 23.00 C   cubic: 23.34 C
+At 13:00  linear: 23.75 C   cubic: 25.03 C
+With sparse data the cubic spline can wiggle between points,
+while linear interpolation stays bounded by its neighbours.
+Saved figure outputs/figs/task13_interpolation.png
+
+============================================================
+E) MODIFIED CASE: Sensor calibration lookup table
+============================================================
+  raw voltage 0.80 V  ->  pressure 31.45 kPa
+  raw voltage 1.75 V  ->  pressure 100.36 kPa
+  raw voltage 2.90 V  ->  pressure 183.99 kPa
+Interpretation: the calibration curve converts raw sensor voltages to
+engineering units; interpolation estimates values between calibration points.
+
+======================================================================
+### Task_14_curve_fitting.py
+======================================================================
+============================================================
+ORIGINAL CASE: Server response-time modelling (Task 14)
+============================================================
+Fitted model: y = 0.002167 x^2 + -0.1345 x + 85.00
+RMSE: 1.55 ms
+Predicted response at 400 users: 377.86 ms
+
+------------------------------------------------------------
+C) PARAMETER CHANGE: add an outlier at 350 users (800 ms)
+------------------------------------------------------------
+Fitted model with outlier: y = 0.013952 x^2 + -3.7881 x + 297.14
+RMSE: 92.59 ms (was 1.55 ms)
+Prediction at 400 users now: 1014.29 ms (was 377.86 ms)
+A single bad measurement heavily distorts the quadratic fit -
+in practice, outliers should be cleaned before fitting.
+Saved figure outputs/figs/task14_curve_fit.png
+
+============================================================
+E) MODIFIED CASE: Demand forecasting (exponential growth)
+============================================================
+Fitted growth model: sales = 95.82 * e^(0.2208 t)
+Growth rate: 22.08% per month
+RMSE: 0.91 units
+Forecast for month 12: 1355 units
+Interpretation: the fitted growth rate (~ 22.1% ) projects demand, helping the business plan stock and staff.
+
+======================================================================
+### Task_15_numerical_differentiation.py
+======================================================================
+============================================================
+ORIGINAL CASE: Speed from GPS positions (Task 15)
+============================================================
+t = 0 s, position = 0.0 m, estimated speed = 4.80 m/s
+t = 1 s, position = 4.8 m, estimated speed = 5.10 m/s
+t = 2 s, position = 10.2 m, estimated speed = 5.65 m/s
+t = 3 s, position = 16.1 m, estimated speed = 6.25 m/s
+t = 4 s, position = 22.7 m, estimated speed = 6.95 m/s
+t = 5 s, position = 30.0 m, estimated speed = 7.65 m/s
+t = 6 s, position = 38.0 m, estimated speed = 8.00 m/s
+
+------------------------------------------------------------
+C) PARAMETER CHANGE: effect of noise vs step size h
+------------------------------------------------------------
+  h =  1.0: max speed error with GPS noise = 0.349 m/s
+  h =  0.5: max speed error with GPS noise = 0.278 m/s
+  h =  0.1: max speed error with GPS noise = 1.001 m/s
+Very small h amplifies measurement noise (error ~ noise/h); a
+moderate h often gives the most reliable real-world estimate.
+Saved figure outputs/figs/task15_speed.png
+
+============================================================
+E) MODIFIED CASE: Acceleration from velocity data
+============================================================
+t = 0 s, v = 10.0 m/s, estimated acceleration = 2.50 m/s^2
+t = 1 s, v = 12.5 m/s, estimated acceleration = 2.90 m/s^2
+t = 2 s, v = 15.8 m/s, estimated acceleration = 3.55 m/s^2
+t = 3 s, v = 19.6 m/s, estimated acceleration = 4.10 m/s^2
+t = 4 s, v = 24.0 m/s, estimated acceleration = 4.45 m/s^2
+t = 5 s, v = 28.5 m/s, estimated acceleration = 4.50 m/s^2
+t = 6 s, v = 33.0 m/s, estimated acceleration = 4.35 m/s^2
+t = 7 s, v = 37.2 m/s, estimated acceleration = 4.00 m/s^2
+t = 8 s, v = 41.0 m/s, estimated acceleration = 3.80 m/s^2
+Interpretation: acceleration peaks near t = 4 s (strongest throttle
+input) then declines as the vehicle approaches cruising speed.
+
+======================================================================
+### Task_16_numerical_integration.py
+======================================================================
+============================================================
+ORIGINAL CASE: Smart-meter energy consumption (Task 16)
+============================================================
+Energy using trapezoidal rule: 15.700 kWh
+Energy using Simpson's rule:   15.800 kWh
+Difference between estimates:  0.100 kWh
+
+------------------------------------------------------------
+C) PARAMETER CHANGE: sample every hour (finer grid)
+------------------------------------------------------------
+Trapezoid: 15.700 kWh, Simpson: 15.700 kWh, difference 0.000 kWh
+Finer sampling makes both rules agree more closely, since the
+curvature between samples matters less.
+
+============================================================
+E) MODIFIED CASE: Distance from velocity data
+============================================================
+Distance (trapezoid): 104.400 km
+Distance (Simpson):   107.400 km
+Average speed: 71.6 km/h
+Interpretation: integrating the speed profile gives the total
+distance travelled (~ 107.40 km) without knowing the
+train's position at any moment.
+
+======================================================================
+### Task_17_euler_ode.py
+======================================================================
+============================================================
+ORIGINAL CASE: Newton's law of cooling (Task 17)
+============================================================
+Euler temperature after 30 min:  26.40 C
+Exact temperature after 30 min:  26.78 C
+Final absolute error: 0.3720 C
+
+------------------------------------------------------------
+C) PARAMETER CHANGE: step size h = 2.0, 1.0, 0.5, 0.25
+------------------------------------------------------------
+  h =  2.0: T(30) = 26.0595 C, error = 0.7165 C
+  h =  1.0: T(30) = 26.4041 C, error = 0.3720 C
+  h =  0.5: T(30) = 26.5870 C, error = 0.1890 C
+  h = 0.25: T(30) = 26.6808 C, error = 0.0952 C
+Halving h roughly halves the error - characteristic of a
+first-order method like Euler.
+Saved figure outputs/figs/task17_euler.png
+
+============================================================
+E) MODIFIED CASE: Logistic population growth
+============================================================
+Fish population after 24 months (Euler): 999.2
+Exact logistic solution at 24 months:    998.7
+Interpretation: growth is fast early, then slows as the population
+approaches the carrying capacity of 1000 fish - the S-shaped
+logistic curve typical of real populations.
+
+======================================================================
+### Task_18_scipy_ode.py
+======================================================================
+============================================================
+ORIGINAL CASE: RC circuit charging (Task 18)
+============================================================
+Solver success: True
+Capacitor voltage at 5 s: 4.9663 V
+Maximum error against exact solution: 9.282e-10 V
+
+------------------------------------------------------------
+C) PARAMETER CHANGE: R = 500, 1000, 2000 ohm
+------------------------------------------------------------
+  R =    500 ohm: tau = 0.5 s, V(5s) = 5.000 V (exact 5.000)
+  R =   1000 ohm: tau = 1.0 s, V(5s) = 4.966 V (exact 4.966)
+  R =   2000 ohm: tau = 2.0 s, V(5s) = 4.590 V (exact 4.590)
+Larger R (bigger tau) means slower charging; the solver stays
+accurate for every time constant.
+Saved figure outputs/figs/task18_rc.png
+
+============================================================
+E) MODIFIED CASE: SIR epidemic model (epidemiology)
+============================================================
+Solver success: True
+Peak infections: 3005 people at day 49.7
+Final recovered (total ever infected): 9404 (94.0% of the population)
+Interpretation: the epidemic peaks around day 50; afterwards recoveries outpace new infections.
+R0 = beta/gamma = 2.9999999999999996 > 1, so the outbreak spreads.
+
+======================================================================
+### Task_19_optimization.py
+======================================================================
+============================================================
+ORIGINAL CASE: Cloud server allocation (Task 19)
+============================================================
+Optimization success: True
+Type A allocation: 0.000
+Type B allocation: 5.882
+Total capacity: 1000.00
+Minimum planning cost: 105.88
+Best nearby integer solution (cost, A, B, capacity): (108, 0, 6, 1020)
+
+------------------------------------------------------------
+C) PARAMETER CHANGE: requirement 1000 -> 1400; Type B cost 18 -> 20
+------------------------------------------------------------
+New continuous optimum: A = 0.000, B = 8.235, cost = 164.71, capacity = 1400.0
+Raising the requirement and Type-B cost pushes the optimum toward
+more Type-A servers (cheaper per unit capacity now).
+
+============================================================
+E) MODIFIED CASE: Meeting capacity under a budget cap
+============================================================
+Best plan: A = 5.00, B = 5.00, capacity = 1350.0, cost = 150.00 (budget 170)
+The budget is sufficient - the requirement is met exactly.
+Interpretation: constrained optimisation turns resource-allocation
+trade-offs into a single best decision under limits.
+
+======================================================================
+### Task_20_monte_carlo.py
+======================================================================
+============================================================
+ORIGINAL CASE: Server-overload risk (Task 20)
+============================================================
+Estimated overload probability: 10.6160%
+Number of overload cases: 10616 out of 100000
+
+------------------------------------------------------------
+C) PARAMETER CHANGE: mean demand 850 -> 950; N = 1,000 vs 100,000
+------------------------------------------------------------
+  mean demand 850: simulated 10.6720%, theoretical 10.5650%
+  mean demand 950: simulated 33.7330%, theoretical 33.8461%
+  N =  1,000: estimate 11.0000%
+  N = 10,000: estimate 10.7400%
+  N = 100,000: estimate 10.5840%
+Higher mean demand sharply raises overload risk; more simulations
+make the estimate less noisy.
+Saved figure outputs/figs/task20_monte_carlo.png
+
+============================================================
+E) MODIFIED CASE: Portfolio-loss probability (finance)
+============================================================
+Probability of a loss in one year: 29.70%
+95% Value-at-Risk: 16.76% of the investment (~ 8,380 KES)
+Expected annual profit: 3,987 KES
+Interpretation: despite a positive expected return, there is a  29.7% chance of losing money; VaR quantifies the downside.
+
